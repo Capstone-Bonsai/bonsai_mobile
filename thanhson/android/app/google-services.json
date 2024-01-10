@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1043887338084",
+    "project_id": "thanhsongarden-99850",
+    "storage_bucket": "thanhsongarden-99850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1043887338084:android:6356729baeaa4b74dd6571",
+        "android_client_info": {
+          "package_name": "com.example.thanhson"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEKQynG3p00oP6JeDloOGrHdVtFOq-vDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
