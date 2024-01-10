@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thanhson/src/features/widgets/box.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/features/controllers/login_controllers.dart';
+import 'package:thanhson/src/features/models/gardener.dart';
 
 class Setting extends StatefulWidget {
   final VoidCallback? onPressedCallback;
@@ -15,33 +16,63 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
+    double imageSize = MediaQuery.of(context).size.width * 2 / 3;
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: mainColor,
+          backgroundColor: greyColor,
           automaticallyImplyLeading: false,
-          titleSpacing: 50,
+          centerTitle: true,
           title: const Text(
-            'Setting',
+            'Cài đặt',
             style: TextStyle(
-              fontWeight: FontWeight.bold, // Set text to bold
+              fontWeight: FontWeight.bold,
+              fontSize: 30
             ),
           ),
         ),
-        body: Column(
+        body: Container(
+          color: greyColor,
+          child: Column(
           children: [
+            SizedBox(
+            width: imageSize,
+            height: imageSize,
+            child: ClipOval(
+              child: Image.network(
+                gardener.image,
+                fit: BoxFit.cover,
+              ),
+            ),
+            ),
             const SizedBox(height: 20),
-            Box(
-              titleString: 'Change password',
-              onPressedCallback: () {},
+            Text(
+              gardener.name,
+              style: const TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontSize: 20,
+                ),
             ),
             const SizedBox(height: 20),
             Box(
-              titleString: 'Log out!',
+              titleString: 'Quản lý thông tin',
+              onPressedCallback: () {},
+            ),
+            const SizedBox(height: 10),
+            Box(
+              titleString: 'Đổi mật khẩu',
+              onPressedCallback: () {},
+            ),
+            const SizedBox(height: 10),
+            Box(
+              titleString: 'Đăng xuất',
               onPressedCallback: () {
                 logoutFuture(context);
               },
+              isLogout: true,
             ),
           ],
-        ));
+        )
+        )
+         );
   }
 }

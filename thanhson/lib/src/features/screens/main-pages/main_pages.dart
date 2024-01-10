@@ -17,14 +17,6 @@ class MainPages extends StatefulWidget {
 
 class _MainPagesState extends State<MainPages> {
   int currentIndex = 0;
-  late CupertinoTabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = CupertinoTabController(initialIndex: currentIndex);
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -70,12 +62,5 @@ class _MainPagesState extends State<MainPages> {
         }
       },
     );
-  }
-
-  @override
-  void dispose() {
-    // Dispose the pageController when the widget is disposed
-    tabController.dispose();
-    super.dispose();
   }
 }

@@ -16,6 +16,12 @@ class _DetailState extends State<Detail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
           backgroundColor: greyColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
@@ -99,6 +105,58 @@ class _DetailState extends State<Detail> {
                 ),
               ),
               const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.topLeft,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                   mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Tên Khách hàng: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 20
+                          ),
+                        ),
+                        TextSpan(
+                          text: details.customerName,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: 'Số điện thoại: ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                            fontSize: 20
+                          ),
+                        ),
+                        TextSpan(
+                          text: details.phoneNumber,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20
+                              ),
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
+              )
             ],
           ),
         ));
