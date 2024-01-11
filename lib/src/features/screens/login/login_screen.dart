@@ -6,6 +6,7 @@ import 'package:thanhson/src/constants/sizes.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:thanhson/src/features/controllers/login_controllers.dart';
+import 'package:thanhson/src/features/screens/forget-password/forget_password.dart';
 
 bool obscureText = true;
 
@@ -28,7 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -57,18 +57,20 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildTop() {
     return SizedBox(
-      width: mediaSize.width,
-      child: const Image(
-        image: AssetImage(logo),
-        height: 150,
-      ),
-    );
+        width: mediaSize.width,
+        child: const Column(children: [
+          SizedBox(height: 50),
+          Image(
+            image: AssetImage(logo),
+            height: 150,
+          ),
+        ]));
   }
 
   Widget _buildBottom() {
     return SizedBox(
       width: mediaSize.width,
-      height: 400,
+      height: 450,
       child: Card(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -120,7 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   loginFuture(context, email, password, rememberUser);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: mainColor, // Set the background color to green
+                  backgroundColor:
+                      mainColor, // Set the background color to green
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
                         10.0), // Set the border radius for a rectangular shape
@@ -128,8 +131,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Text(
                   tLogin.toUpperCase(),
-                  style:
-                      const TextStyle(color: Colors.white), // Set text color to white
+                  style: const TextStyle(
+                      color: Colors.white), // Set text color to white
                 ),
               ),
             )
@@ -194,9 +197,24 @@ class _LoginScreenState extends State<LoginScreen> {
             const Text(
               "Remember me",
               style: TextStyle(color: Colors.grey, fontSize: 12),
-            )
+            ),
           ],
         ),
+        GestureDetector(
+            onTap: () {
+              // Navigate to another page when the container is clicked
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ForgetPassword(),
+                ),
+              );
+            },
+            child: const Text(
+              "Quên mật khẩu?",
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            )
+          ),
       ],
     );
   }

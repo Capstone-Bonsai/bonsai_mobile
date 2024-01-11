@@ -4,7 +4,6 @@ import 'package:thanhson/src/features/screens/login/login_screen.dart';
 import 'package:thanhson/src/features/screens/main-pages/main_pages.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 late Box box1;
 Future loginFuture(BuildContext context, String email, String password,
     bool rememberUser) async {
@@ -71,7 +70,7 @@ Future<void> logoutFuture(BuildContext context) async {
   var sharedPref = await SharedPreferences.getInstance();
   sharedPref.clear();
   if (!context.mounted) return;
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(builder: (_) => const LoginScreen()),
-  );
+  Navigator.of(context, rootNavigator: true).pushReplacement(MaterialPageRoute(
+      builder: (context) => const LoginScreen(),
+    ));
 }
