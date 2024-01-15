@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/texts.dart';
+import 'package:thanhson/src/features/controllers/forget_password_controller.dart';
+import 'package:thanhson/src/constants/images.dart';
 
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
@@ -9,7 +11,7 @@ class ForgetPassword extends StatefulWidget {
   State<ForgetPassword> createState() => _ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword>{
+class _ForgetPasswordState extends State<ForgetPassword> {
   late Size mediaSize;
   TextEditingController emailController = TextEditingController();
 
@@ -17,7 +19,8 @@ class _ForgetPasswordState extends State<ForgetPassword>{
   Widget build(BuildContext context) {
     mediaSize = MediaQuery.of(context).size;
     return Scaffold(
-     appBar: AppBar(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
@@ -25,32 +28,66 @@ class _ForgetPasswordState extends State<ForgetPassword>{
             },
           ),
           backgroundColor: greyColor,
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: const Text(
-            'Quên mật khẩu',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-          ),
         ),
-        body: Container(
-          width: mediaSize.width,
-          color: greyColor,
-          child:
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            const Text(
-              tEmailRequest
+        body: Stack(
+          children: [
+            Container(
+              width: mediaSize.width,
+              color: greyColor,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Image(
+                        image: AssetImage(logoGreen),
+                        height: 150,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Center(
+                        child: Text(
+                          'Quên mật khẩu',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 30),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(tEmailRequest),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      _buildInputField(tEmail, emailController),
+                      const Spacer(),
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 50),
+                        width: mediaSize.width,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            String email = emailController.text;
+                            checkEmail(context, email);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Xác nhận".toUpperCase(),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
             ),
-            const SizedBox(
-              height:  20,
-            ),
-          _buildInputField(tEmail, emailController),
-          ]),
-        ),
-    ));
+          ],
+        ));
   }
 
   Widget _buildInputField(String text, TextEditingController controller) {

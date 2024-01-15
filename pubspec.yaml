@@ -41,6 +41,7 @@ dependencies:
   fluttertoast: ^8.2.2
   cached_network_image:
   carousel_slider:
+  http:
 
 dev_dependencies:
   flutter_test:
