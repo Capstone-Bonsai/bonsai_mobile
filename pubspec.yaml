@@ -42,6 +42,7 @@ dependencies:
   cached_network_image:
   carousel_slider:
   http:
+  flutter_verification_code:
 
 dev_dependencies:
   flutter_test:

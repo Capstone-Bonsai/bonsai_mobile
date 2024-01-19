@@ -7,6 +7,7 @@ import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/images.dart';
 import 'package:thanhson/src/features/models/gardener.dart';
 import 'package:thanhson/src/features/screens/forget-password/add_new_password.dart';
+import "package:flutter_verification_code/flutter_verification_code.dart";
 
 class CodeForResetPassword extends StatefulWidget {
   final Gardener gardener;
@@ -19,7 +20,7 @@ class CodeForResetPassword extends StatefulWidget {
 class _CodeForResetPasswordState extends State<CodeForResetPassword> {
   late Size mediaSize;
   late int code;
-  TextEditingController codeController = TextEditingController();
+  late String inputCode;
 
   @override
   void initState() {
@@ -59,12 +60,6 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
           }
         }));
     return response.statusCode;
-  }
-
-  @override
-  void dispose() {
-    codeController.dispose();
-    super.dispose();
   }
 
   @override
@@ -111,27 +106,41 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
                 const SizedBox(
                   height: 10,
                 ),
-                _buildInputField("Mã xác thực", codeController),
+                Center(
+                  child: VerificationCode(
+                    length: 6,
+                    textStyle:
+                        const TextStyle(fontSize: 20, color: Colors.black),
+                    underlineColor: Colors.black,
+                    keyboardType: TextInputType.number,
+                    underlineUnfocusedColor: Colors.black,
+                    onCompleted: (value) {
+                      setState(() {
+                        inputCode = value;
+                        if (inputCode == code.toString()) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddNewPassword(),
+                            ),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Wrong code",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER);
+                        }
+                      });
+                    },
+                    onEditing: (value) {},
+                  ),
+                ),
                 const Spacer(),
                 Container(
                   margin: const EdgeInsets.only(bottom: 50),
                   width: mediaSize.width,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (codeController.text == code.toString()) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AddNewPassword(),
-                          ),
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                            msg: "Wrong code",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.CENTER);
-                      }
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: mainColor,
                       shape: RoundedRectangleBorder(
@@ -147,21 +156,6 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
               ]),
         ),
       ),
-    );
-  }
-
-  Widget _buildInputField(String text, TextEditingController controller) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.person_outline_outlined),
-          labelText: text,
-          hintText: text,
-          border: const OutlineInputBorder(),
-          suffixIcon: const IconButton(
-            onPressed: null,
-            icon: Icon(null),
-          )),
     );
   }
 }
