@@ -213,8 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: const Text(
               "Quên mật khẩu?",
               style: TextStyle(color: Colors.grey, fontSize: 12),
-            )
-          ),
+            )),
       ],
     );
   }

@@ -24,55 +24,50 @@ class _SettingState extends State<Setting> {
           centerTitle: true,
           title: const Text(
             'Cài đặt',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
         body: Container(
-          color: greyColor,
-          child: Column(
-          children: [
-            SizedBox(
-            width: imageSize,
-            height: imageSize,
-            child: ClipOval(
-              child: Image.network(
-                gardener.image,
-                fit: BoxFit.cover,
-              ),
-            ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              gardener.name,
-              style: const TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 20,
+            color: greyColor,
+            child: Column(
+              children: [
+                SizedBox(
+                  width: imageSize,
+                  height: imageSize,
+                  child: ClipOval(
+                    child: Image.network(
+                      gardener.image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-            ),
-            const SizedBox(height: 20),
-            Box(
-              titleString: 'Quản lý thông tin',
-              onPressedCallback: () {},
-            ),
-            const SizedBox(height: 10),
-            Box(
-              titleString: 'Đổi mật khẩu',
-              onPressedCallback: () {},
-            ),
-            const SizedBox(height: 10),
-            Box(
-              titleString: 'Đăng xuất',
-              onPressedCallback: () {
-                logoutFuture(context);
-              },
-              isLogout: true,
-            ),
-          ],
-        )
-        )
-         );
+                const SizedBox(height: 20),
+                Text(
+                  gardener.name,
+                  style: const TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Box(
+                  titleString: 'Quản lý thông tin',
+                  onPressedCallback: () {},
+                ),
+                const SizedBox(height: 10),
+                Box(
+                  titleString: 'Đổi mật khẩu',
+                  onPressedCallback: () {},
+                ),
+                const SizedBox(height: 10),
+                Box(
+                  titleString: 'Đăng xuất',
+                  onPressedCallback: () {
+                    logoutFuture(context);
+                  },
+                  isLogout: true,
+                ),
+              ],
+            )));
   }
 }

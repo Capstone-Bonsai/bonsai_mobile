@@ -109,53 +109,47 @@ class _DetailState extends State<Detail> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 alignment: Alignment.topLeft,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, 
-                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Tên Khách hàng: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 20
-                          ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Tên Khách hàng: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 20),
+                            ),
+                            TextSpan(
+                              text: details.customerName,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                            ),
+                          ],
                         ),
-                        TextSpan(
-                          text: details.customerName,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20
-                              ),
+                      ),
+                      const SizedBox(height: 10),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Số điện thoại: ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 20),
+                            ),
+                            TextSpan(
+                              text: details.phoneNumber,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 20),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        const TextSpan(
-                          text: 'Số điện thoại: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: 20
-                          ),
-                        ),
-                        TextSpan(
-                          text: details.phoneNumber,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20
-                              ),
-                        ),
-                      ],
-                    ),
-                  )
-                ]),
+                      )
+                    ]),
               )
             ],
           ),

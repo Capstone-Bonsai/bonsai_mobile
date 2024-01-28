@@ -31,15 +31,12 @@ class _CalendarState extends State<Calendar> {
           centerTitle: true,
           title: const Text(
             'Lịch Làm Việc',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 30
-            ),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
         body: Center(
-          child: Container(
-            color: greyColor,
+            child: Container(
+          color: greyColor,
           child: Column(children: [
             TableCalendar(
               focusedDay: _focusedDay,
@@ -111,42 +108,42 @@ class _CalendarState extends State<Calendar> {
     return events;
   }
 
- Widget _buildEventsList() {
-  final events = _getEventTitle(_selectedDay ?? DateTime.now());
+  Widget _buildEventsList() {
+    final events = _getEventTitle(_selectedDay ?? DateTime.now());
 
-  return ListView.builder(
-    itemCount: events.length,
-    itemBuilder: (context, index) {
-      return ListTile(
-        title: Center(
-          child: GestureDetector(
-            onTap: () {
-              // Navigate to another page when the container is clicked
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Detail(),
+    return ListView.builder(
+      itemCount: events.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Center(
+            child: GestureDetector(
+              onTap: () {
+                // Navigate to another page when the container is clicked
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const Detail(),
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8.0),
+                  border: Border.all(
+                    color: Colors.green,
+                    width: 1.0,
+                  ),
                 ),
-              );
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
-                border: Border.all(
-                  color: Colors.green,
-                  width: 1.0,
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  events[index],
                 ),
-              ),
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                events[index],
               ),
             ),
           ),
-        ),
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 }
