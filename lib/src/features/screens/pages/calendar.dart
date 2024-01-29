@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:thanhson/src/features/controllers/calendar_controller.dart';
 import 'package:thanhson/src/features/models/working_date.dart';
 import 'package:thanhson/src/features/screens/pages/detail.dart';
 
@@ -12,19 +13,34 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  List<WorkingDate> workingDates = [];
   late DateTime _focusedDay;
   late DateTime? _selectedDay;
-
+  late bool _loading;
   @override
   void initState() {
-    super.initState();
     _focusedDay = DateTime.now();
     _selectedDay = DateTime.now();
+    super.initState();
+    initializeData();
+  }
+
+  Future<void> initializeData() async {
+    setState(() {
+      _loading = true;
+    });
+    List<WorkingDate> fetchedData =
+        await fetchData(_focusedDay.month, _focusedDay.year);
+    setState(() {
+      workingDates = fetchedData;
+      _loading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: greyColor,
         appBar: AppBar(
           backgroundColor: greyColor,
           automaticallyImplyLeading: false,
@@ -34,52 +50,78 @@ class _CalendarState extends State<Calendar> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
-        body: Center(
-            child: Container(
-          color: greyColor,
-          child: Column(children: [
-            TableCalendar(
-              focusedDay: _focusedDay,
-              firstDay: DateTime(DateTime.now().year, 1, 1),
-              lastDay: DateTime(DateTime.now().year, 12, 31),
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              calendarFormat: CalendarFormat.month,
-              headerStyle: const HeaderStyle(
-                formatButtonVisible: false,
-              ),
-              calendarStyle: CalendarStyle(
-                selectedDecoration: const BoxDecoration(
-                    color: mainColor, shape: BoxShape.circle),
-                todayDecoration: BoxDecoration(
-                  color: Colors.transparent,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: mainColor, // Set the color of the border (line) here
-                    width: 2.0, // Set the width of the border
-                  ),
-                ),
-                todayTextStyle: const TextStyle(
-                  color: Colors
-                      .black, // Set the color of the text for today's date here
-                ),
-              ),
-              eventLoader: (date) => _getEventsForDay(date),
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay =
-                      focusedDay; // Update the focused day when a day is selected
-                });
-                // Handle day selection if needed
-              },
-            ),
-            const SizedBox(
-                height: 16.0), // Adjust the space between calendar and events
-            Expanded(
-              child: _buildEventsList(),
-            ),
-          ]),
-        )));
+        body: FutureBuilder(
+            future: null,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  _loading) {
+                return const Column(
+                  mainAxisAlignment:
+                      MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 200),
+                    Center(
+                      child: CircularProgressIndicator(
+                        color: mainColor,
+                      ),
+                    ),
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text('Error fetching data'),
+                );
+              } else {
+                return Container(
+                  color: greyColor,
+                  child: Column(children: [
+                    TableCalendar(
+                      focusedDay: _focusedDay,
+                      firstDay: DateTime(DateTime.now().year, 1, 1),
+                      lastDay: DateTime(DateTime.now().year, 12, 31),
+                      selectedDayPredicate: (day) =>
+                          isSameDay(_selectedDay, day),
+                      calendarFormat: CalendarFormat.month,
+                      headerStyle: const HeaderStyle(
+                        formatButtonVisible: false,
+                      ),
+                      onPageChanged: (focusedDay) {
+                        _focusedDay = focusedDay;
+                        initializeData();
+                      },
+                      calendarStyle: CalendarStyle(
+                        selectedDecoration: const BoxDecoration(
+                            color: mainColor, shape: BoxShape.circle),
+                        todayDecoration: BoxDecoration(
+                          color: Colors.transparent,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: mainColor,
+                            width: 2.0, 
+                          ),
+                        ),
+                        todayTextStyle: const TextStyle(
+                          color: Colors
+                              .black, 
+                        ),
+                      ),
+                      eventLoader: (date) => _getEventsForDay(date),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _selectedDay = selectedDay;
+                          _focusedDay = focusedDay;
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                        height: 16.0),
+                    Expanded(
+                      child: _buildEventsList(),
+                    ),
+                  ]),
+                );
+              }
+            }));
   }
 
   List<DateTime> _getEventsForDay(DateTime day) {
@@ -101,7 +143,7 @@ class _CalendarState extends State<Calendar> {
     for (var workingDate in workingDates) {
       if (!day.isBefore(workingDate.startDate) &&
           !day.isAfter(workingDate.endDate.add(const Duration(days: 1)))) {
-        events.add(workingDate.title);
+        events.add(workingDate.name);
       }
     }
 
@@ -118,7 +160,6 @@ class _CalendarState extends State<Calendar> {
           title: Center(
             child: GestureDetector(
               onTap: () {
-                // Navigate to another page when the container is clicked
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -127,19 +168,22 @@ class _CalendarState extends State<Calendar> {
                 );
               },
               child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8.0),
-                  border: Border.all(
-                    color: Colors.green,
-                    width: 1.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8.0),
+                    border: Border.all(
+                      color: Colors.green,
+                      width: 1.0,
+                    ),
                   ),
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  events[index],
-                ),
-              ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        events[index],
+                      ),
+                    ],
+                  )),
             ),
           ),
         );

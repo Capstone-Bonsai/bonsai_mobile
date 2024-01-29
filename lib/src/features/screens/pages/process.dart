@@ -14,6 +14,7 @@ class _ProcessState extends State<Process> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: greyColor,
       appBar: AppBar(
         backgroundColor: greyColor,
         automaticallyImplyLeading: false,
@@ -23,8 +24,7 @@ class _ProcessState extends State<Process> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
         ),
       ),
-      body: Container(
-        color: greyColor,
+      body: SizedBox(
         child: Column(
           children: [
             Expanded(

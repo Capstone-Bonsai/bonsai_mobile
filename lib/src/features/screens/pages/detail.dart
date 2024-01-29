@@ -15,6 +15,7 @@ class _DetailState extends State<Detail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: greyColor,
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -30,8 +31,7 @@ class _DetailState extends State<Detail> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
-        body: Container(
-          color: greyColor,
+        body: SizedBox(
           child: Column(
             children: [
               CarouselSlider(
