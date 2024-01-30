@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:thanhson/src/features/controllers/login_controllers.dart';
 import 'dart:io';
@@ -9,9 +7,6 @@ void main() async {
   await Hive.initFlutter();
   HttpOverrides.global = MyHttpOverrides();
   runApp(const App());
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 }
 
 class App extends StatelessWidget {
