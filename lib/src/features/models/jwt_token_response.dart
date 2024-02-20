@@ -3,7 +3,7 @@ class JWTTokenResponse{
   final String username;
   final String fullName;
   final String email;
-  final String avatar;
+  final String? avatar;
   final String token;
   final String role;
 

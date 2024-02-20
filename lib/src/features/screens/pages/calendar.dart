@@ -56,8 +56,7 @@ class _CalendarState extends State<Calendar> {
               if (snapshot.connectionState == ConnectionState.waiting ||
                   _loading) {
                 return const Column(
-                  mainAxisAlignment:
-                      MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     SizedBox(height: 200),
                     Center(
@@ -97,12 +96,11 @@ class _CalendarState extends State<Calendar> {
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: mainColor,
-                            width: 2.0, 
+                            width: 2.0,
                           ),
                         ),
                         todayTextStyle: const TextStyle(
-                          color: Colors
-                              .black, 
+                          color: Colors.black,
                         ),
                       ),
                       eventLoader: (date) => _getEventsForDay(date),
@@ -113,8 +111,7 @@ class _CalendarState extends State<Calendar> {
                         });
                       },
                     ),
-                    const SizedBox(
-                        height: 16.0),
+                    const SizedBox(height: 16.0),
                     Expanded(
                       child: _buildEventsList(),
                     ),
@@ -128,8 +125,10 @@ class _CalendarState extends State<Calendar> {
     List<DateTime> events = [];
 
     for (var workingDate in workingDates) {
-      if (!day.isBefore(workingDate.startDate) &&
-          !day.isAfter(workingDate.endDate.add(const Duration(days: 1)))) {
+      // Check if the day matches the working date
+      if (day.year == workingDate.date.year &&
+          day.month == workingDate.date.month &&
+          day.day == workingDate.date.day) {
         events.add(day);
       }
     }
@@ -141,9 +140,10 @@ class _CalendarState extends State<Calendar> {
     List<String> events = [];
 
     for (var workingDate in workingDates) {
-      if (!day.isBefore(workingDate.startDate) &&
-          !day.isAfter(workingDate.endDate.add(const Duration(days: 1)))) {
-        events.add(workingDate.name);
+      if (day.year == workingDate.date.year &&
+          day.month == workingDate.date.month &&
+          day.day == workingDate.date.day) {
+        events.add(workingDate.title);
       }
     }
 
@@ -160,12 +160,18 @@ class _CalendarState extends State<Calendar> {
           title: Center(
             child: GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Detail(),
-                  ),
-                );
+                if (workingDates.isNotEmpty && index < workingDates.length) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Detail(
+                          serviceOrderId: workingDates[index].serviceOrderId),
+                    ),
+                  );
+                } else {
+                  // Handle the case where workingDates is empty or index is out of range
+                  // You may display a message or take appropriate action here
+                }
               },
               child: Container(
                   decoration: BoxDecoration(

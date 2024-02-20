@@ -39,7 +39,7 @@ Future loginFuture(BuildContext context, String email, String password,
       JWTTokenResponse jwtResponse = JWTTokenResponse.fromJson(apiResponse);
       var sharedPref = await SharedPreferences.getInstance();
       sharedPref.setString('token', jwtResponse.token);
-      if (jwtResponse.role == "Manager") {
+      if (jwtResponse.role == "Gardener") {
         if (rememberUser) {
           box1 = await Hive.openBox('logindata');
           box1.put('email', email);

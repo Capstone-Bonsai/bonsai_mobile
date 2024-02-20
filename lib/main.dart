@@ -20,14 +20,7 @@ class App extends StatelessWidget {
         '/': (context) => FutureBuilder(
               future: autoLoginFuture(context),
               builder: (context, snapshot) {
-                // Check if the Future has completed
-                if (snapshot.connectionState == ConnectionState.done) {
-                  // Navigate to your default page widget
                   return const CircularProgressIndicator();
-                } else {
-                  // Display a loading indicator or placeholder while the Future is still running
-                  return const CircularProgressIndicator();
-                }
               },
             ),
       }

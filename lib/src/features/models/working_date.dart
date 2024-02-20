@@ -1,22 +1,19 @@
 class WorkingDate {
-  final DateTime startDate;
-  final DateTime endDate;
-  final String name;
+  final String serviceOrderId;
+  final DateTime date;
+  final String title;
   final String location;
   WorkingDate({
-    required this.startDate,
-    required this.endDate,
-    required this.name,
+    required this.serviceOrderId,
+    required this.date,
+    required this.title,
     required this.location,
   });
   factory WorkingDate.fromJson(Map<String, dynamic> json) {
-    String dateString = json['date']['iso'];
-    DateTime date = DateTime.parse(dateString);
     return WorkingDate(
-      startDate: date,
-      endDate: date,
-      name: json['name'],
-      location: json['description'],
-    );
+        serviceOrderId: json['serviceOrderId'],
+        date: DateTime.parse(json['date']),
+        title: json['serviceOrder']['address'],
+        location: json['serviceOrder']['address']);
   }
 }
