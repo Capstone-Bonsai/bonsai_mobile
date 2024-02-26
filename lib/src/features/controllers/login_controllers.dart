@@ -45,8 +45,6 @@ Future loginFuture(BuildContext context, String email, String password,
           box1.put('email', email);
           box1.put('password', password);
         }
-        var sharedPref = await SharedPreferences.getInstance();
-        sharedPref.setString('email', email);
         if (!context.mounted) return;
         Navigator.of(context).pop();
         Navigator.of(context).pushReplacement(
@@ -101,15 +99,47 @@ Future<void> autoLoginFuture(BuildContext context) async {
       MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
   }
-  if (password == "123456") {
-    var sharedPref = await SharedPreferences.getInstance();
-    sharedPref.setString('email', email);
+  try {
+    final uri = Uri.parse('${ApiConfig.baseUrl}/Auth/Login');
+    final headers = {'Content-Type': 'application/json'};
+    final Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+    };
+    final response = await http
+        .post(uri, headers: headers, body: jsonEncode(body))
+        .timeout(const Duration(seconds: 30));
 
+    if (response.statusCode == 200) {
+      final dynamic apiResponse = json.decode(response.body);
+      JWTTokenResponse jwtResponse = JWTTokenResponse.fromJson(apiResponse);
+      var sharedPref = await SharedPreferences.getInstance();
+      sharedPref.setString('token', jwtResponse.token);
+      if (jwtResponse.role == "Gardener") {
+        if (!context.mounted) return;
+        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (_) => const MainPages(
+                    index: 0,
+                  )),
+        );
+      } else {
+        if (!context.mounted) return;
+        Navigator.of(context).pop();
+        CustomAlertDialog.show(
+          context,
+          "Lỗi đăng nhập",
+          "Chỉ nhân viên làm vườn mới đăng nhập được vào app này!",
+        );
+      }
+    } else {
     if (!context.mounted) return;
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const MainPages(index: 0)),
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
-  } else {
+    }
+  } catch (error) {
     if (!context.mounted) return;
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const LoginScreen()),

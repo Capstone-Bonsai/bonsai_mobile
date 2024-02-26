@@ -22,6 +22,10 @@ class _DetailState extends State<Detail> {
     super.initState();
   }
 
+  Future refresh() async{
+    initializeData();
+  }
+
   Future<void> initializeData() async {
     setState(() {
       _loading = true;
@@ -169,6 +173,25 @@ class _DetailState extends State<Detail> {
                                     ),
                                     TextSpan(
                                       text: _workingDetail.customerName,
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                               const SizedBox(height: 10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Email: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text: _workingDetail.email,
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),

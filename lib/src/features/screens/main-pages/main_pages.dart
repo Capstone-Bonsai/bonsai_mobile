@@ -9,56 +9,75 @@ class MainPages extends StatefulWidget {
   final int index;
 
   const MainPages({super.key, required this.index});
+
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
+
   @override
   State<MainPages> createState() => _MainPagesState();
 }
 
 class _MainPagesState extends State<MainPages> {
   int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined)),
-          BottomNavigationBarItem(icon: Icon(Icons.check_box_outlined)),
-          BottomNavigationBarItem(icon: Icon(Icons.settings_outlined)),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month_outlined),
+            label: 'Working Calendar',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.check_box_outlined),
+            label: 'Today Tasks',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          ),
         ],
-        onTap: (index) {
-          if (index == currentIndex) {
-            MainPages.navigatorKey.currentState
-                ?.popUntil((route) => route.isFirst);
-          }
-        },
         activeColor: mainColor,
         inactiveColor: Colors.black,
         border: const Border(
           top: BorderSide(color: Colors.black),
         ),
+        currentIndex: currentIndex,
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
       ),
       tabBuilder: (context, index) {
         switch (index) {
           case 0:
             return CupertinoTabView(
-              navigatorKey: MainPages.navigatorKey,
               builder: (context) {
-                return const CupertinoPageScaffold(child: Calendar());
+                return const SafeArea(
+                  child: CupertinoPageScaffold(child: Calendar()),
+                );
               },
             );
           case 1:
-            return CupertinoTabView(builder: (context) {
-              return const CupertinoPageScaffold(child: Process());
-            });
+            return CupertinoTabView(
+              builder: (context) {
+                return const SafeArea(
+                  child: CupertinoPageScaffold(child: Process()),
+                );
+              },
+            );
           case 2:
-            return CupertinoTabView(builder: (context) {
-              return const CupertinoPageScaffold(child: Setting());
-            });
+            return CupertinoTabView(
+              builder: (context) {
+                return const SafeArea(
+                  child: CupertinoPageScaffold(child: Setting()),
+                );
+              },
+            );
           default:
-            return CupertinoTabView(builder: (context) {
-              return const CupertinoPageScaffold(child: Setting());
-            });
+            return const SizedBox.shrink();
         }
       },
     );

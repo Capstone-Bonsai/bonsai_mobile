@@ -9,7 +9,7 @@ Future<List<WorkingDate>> fetchData(int month, int year) async {
   {
     var sharedPref = await SharedPreferences.getInstance();
     String? token = sharedPref.getString('token');
-    final uri = Uri.parse('${ApiConfig.baseUrl}/AnnualWorkingDay/$month/$year');
+    final uri = Uri.parse('${ApiConfig.baseUrl}/AnnualWorkingDay/WorkingCalendar?month=$month&year=$year');
     final response = await http.get(
       uri,
       headers: {

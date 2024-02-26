@@ -123,16 +123,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      mainColor, // Set the background color to green
+                      mainColor,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        10.0), // Set the border radius for a rectangular shape
+                        10.0),
                   ),
                 ),
                 child: Text(
                   tLogin.toUpperCase(),
                   style: const TextStyle(
-                      color: Colors.white), // Set text color to white
+                      color: Colors.white),
                 ),
               ),
             )

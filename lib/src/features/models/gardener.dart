@@ -1,18 +1,21 @@
+
 class Gardener{
-  final int id;
   final String name;
-  final String image;
+  final String? avatar;
   final String email;
+  final String phoneNumber;
   Gardener({
-    required this.id,
     required this.name,
-    required this.image,
-    required this.email
+    this.avatar,
+    required this.email,
+    required this.phoneNumber
   });
+  factory Gardener.fromJson(Map<String, dynamic> json) {
+    return Gardener(
+      name: json['fullname'] ,
+      avatar: json['avatarUrl'],
+      email: json['email'],
+      phoneNumber: json['phoneNumber'] ?? "", 
+    );
+  }
 }
-Gardener gardener = Gardener(
-    id: 1,
-    name: "Đỗ Thành Bộ",
-    image: "https://www.thrive.org.uk/files/images/News/_hero/Beardy-Gardener-Leigh-1.jpg",
-    email: "ronalbo2610@gmail.com"
-  );
