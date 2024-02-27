@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/images.dart';
-import 'package:thanhson/src/features/screens/forget-password/add_new_password.dart';
+import 'package:thanhson/src/features/controllers/forget_password_controller.dart';
 import "package:flutter_verification_code/flutter_verification_code.dart";
 
 class CodeForResetPassword extends StatefulWidget {
-  final String gardenerEmail;
-  const CodeForResetPassword({super.key, required this.gardenerEmail});
+  final String email;
+  const CodeForResetPassword({super.key, required this.email});
 
   @override
   State<CodeForResetPassword> createState() => _CodeForResetPasswordState();
@@ -15,7 +14,6 @@ class CodeForResetPassword extends StatefulWidget {
 
 class _CodeForResetPasswordState extends State<CodeForResetPassword> {
   late Size mediaSize;
-  late int code;
   late String inputCode;
 
   @override
@@ -78,42 +76,13 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
                     onCompleted: (value) {
                       setState(() {
                         inputCode = value;
-                        if (inputCode == code.toString()) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const AddNewPassword(),
-                            ),
-                          );
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "Wrong code",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.CENTER);
-                        }
+                        otpHandler(context, widget.email, inputCode);
                       });
                     },
                     onEditing: (value) {},
                   ),
                 ),
                 const Spacer(),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 50),
-                  width: mediaSize.width,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: mainColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                    ),
-                    child: Text(
-                      "Xác nhận".toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  ),
-                )
               ]),
         ),
       ),

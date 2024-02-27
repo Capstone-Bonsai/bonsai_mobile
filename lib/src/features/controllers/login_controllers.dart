@@ -68,7 +68,7 @@ Future loginFuture(BuildContext context, String email, String password,
       CustomAlertDialog.show(
         context,
         "Đăng nhập không thành công",
-        "Tài khoản hoặc mật khẩu bạn vừa nhập không chính xác, vui lòng đăng nhập lại",
+        response.body,
       );
     }
   } catch (error) {

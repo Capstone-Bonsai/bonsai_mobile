@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/texts.dart';
 import 'package:thanhson/src/constants/images.dart';
+import 'package:thanhson/src/features/controllers/forget_password_controller.dart';
 
 class AddNewPassword extends StatefulWidget {
-  const AddNewPassword({super.key});
+
+  final String email;
+  final String otp;
+
+  const AddNewPassword({super.key, required this.email, required this.otp});
 
   @override
   State<AddNewPassword> createState() => _AddNewPasswordState();
@@ -68,7 +73,11 @@ class _AddNewPasswordState extends State<AddNewPassword> {
                 margin: const EdgeInsets.only(bottom: 50),
                 width: mediaSize.width,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    String newPassword = passwordController.text;
+                    String confirmPassword = passwordConfirmController.text;
+                    resetPassword(context, widget.email, widget.otp, newPassword, confirmPassword);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: mainColor,
                     shape: RoundedRectangleBorder(
