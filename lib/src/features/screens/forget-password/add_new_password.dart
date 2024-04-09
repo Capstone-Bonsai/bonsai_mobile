@@ -45,7 +45,7 @@ class _AddNewPasswordState extends State<AddNewPassword> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Image(
-                image: AssetImage(logoGreen),
+                image: AssetImage(logo),
                 height: 150,
               ),
               const Center(

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/features/screens/pages/calendar.dart';
-import 'package:thanhson/src/features/screens/pages/process.dart';
 import 'package:thanhson/src/features/screens/pages/setting.dart';
 
 class MainPages extends StatefulWidget {
@@ -60,14 +59,14 @@ class _MainPagesState extends State<MainPages> {
                 );
               },
             );
-          case 1:
-            return CupertinoTabView(
-              builder: (context) {
-                return const SafeArea(
-                  child: CupertinoPageScaffold(child: Process()),
-                );
-              },
-            );
+          // case 1:
+          //   return CupertinoTabView(
+          //     builder: (context) {
+          //       // return const SafeArea(
+          //       //   child: CupertinoPageScaffold(child: Process()),
+          //       // );
+          //     },
+          //   );
           case 2:
             return CupertinoTabView(
               builder: (context) {

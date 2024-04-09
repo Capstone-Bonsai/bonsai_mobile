@@ -59,10 +59,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
         width: mediaSize.width,
         child: const Column(children: [
-          SizedBox(height: 50),
+          SizedBox(height: 40),
           Image(
             image: AssetImage(logo),
-            height: 150,
+            height: 200,
           ),
         ]));
   }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
+import 'package:thanhson/src/constants/images.dart';
+import 'package:thanhson/src/constants/texts.dart';
 import 'package:thanhson/src/features/models/working_detail.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:thanhson/src/features/controllers/calendar_controller.dart';
+import 'package:thanhson/src/features/screens/pages/process.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 class Detail extends StatefulWidget {
-  final String serviceOrderId;
+  final String contractId;
 
-  const Detail({required this.serviceOrderId, super.key});
+  const Detail({required this.contractId, super.key});
 
   @override
   State<Detail> createState() => _DetailState();
@@ -22,7 +27,7 @@ class _DetailState extends State<Detail> {
     super.initState();
   }
 
-  Future refresh() async{
+  Future refresh() async {
     initializeData();
   }
 
@@ -30,7 +35,7 @@ class _DetailState extends State<Detail> {
     setState(() {
       _loading = true;
     });
-    WorkingDetail fetchedData = await getWorkingDetail(widget.serviceOrderId);
+    WorkingDetail fetchedData = await getWorkingDetail(widget.contractId);
     setState(() {
       _workingDetail = fetchedData;
       _loading = false;
@@ -38,6 +43,7 @@ class _DetailState extends State<Detail> {
   }
 
   int current = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,6 +62,20 @@ class _DetailState extends State<Detail> {
             'Chi tiết',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
+           actions: [
+            IconButton(
+              icon: const Icon(Icons.phone),
+              onPressed: () async {
+                final Uri url = Uri(
+                  scheme: 'tel',
+                  path: _workingDetail.customerPhoneNumber
+                );
+                if (await canLaunchUrl(url)){
+                  await launchUrl(url);
+                }
+              },
+            ),
+          ],
         ),
         body: FutureBuilder(
             future: null,
@@ -78,70 +98,96 @@ class _DetailState extends State<Detail> {
                   child: Text('Error fetching data'),
                 );
               } else {
-                return SizedBox(
+                DateTime today = DateTime.now();
+                DateTime startDate = _workingDetail.startDate;
+                DateTime endDate = _workingDetail.endDate;
+
+                DateTime todayDate =
+                    DateTime(today.year, today.month, today.day);
+                DateTime startDateDate =
+                    DateTime(startDate.year, startDate.month, startDate.day);
+                DateTime endDateDate =
+                    DateTime(endDate.year, endDate.month, endDate.day + 1);
+                bool isButtonVisible = true;
+                // bool isButtonVisible = startDateDate.isBefore(todayDate) &&
+                //         endDateDate.isAfter(todayDate) ||
+                //     todayDate == startDateDate ||
+                //     todayDate == endDateDate;
+                String formattedStartDate =
+                    DateFormat('dd-MM-yyyy').format(_workingDetail.startDate);
+                String formattedEndDate =
+                    DateFormat('dd-MM-yyyy').format(_workingDetail.endDate);
+
+                return SafeArea(
                   child: Column(
                     children: [
-                      CarouselSlider(
-                        items: _workingDetail.image
-                            .map((item) => SizedBox(
-                                  width: double.infinity,
-                                  child: Image.network(
-                                    item,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ))
-                            .toList(),
-                        options: CarouselOptions(
-                            autoPlay: false,
-                            enlargeCenterPage: true,
-                            viewportFraction: 1,
-                            onPageChanged: ((index, reason) {
-                              setState(() {
-                                current = index;
-                              });
-                            })),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _workingDetail.image.map((url) {
-                          int index = _workingDetail.image.indexOf(url);
-                          return Container(
-                            width: 8,
-                            height: 8,
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 3),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color:
-                                  current == index ? Colors.black : Colors.grey,
-                            ),
-                          );
-                        }).toList(),
-                      ),
+                      if (_workingDetail.images.isEmpty)
+                        const Image(
+                          image: AssetImage(gardenNotfound),
+                          fit: BoxFit.cover,
+                        ),
+                      if (_workingDetail.images.isNotEmpty)
+                        CarouselSlider(
+                          items: _workingDetail.images
+                              .map((item) => SizedBox(
+                                    width: double.infinity,
+                                    child: Image.network(
+                                      item,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ))
+                              .toList(),
+                          options: CarouselOptions(
+                              autoPlay: false,
+                              enlargeCenterPage: true,
+                              viewportFraction: 1,
+                              onPageChanged: ((index, reason) {
+                                setState(() {
+                                  current = index;
+                                });
+                              })),
+                        ),
+                      if (_workingDetail.images.isNotEmpty)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ..._workingDetail.images.map((url) {
+                              int index = _workingDetail.images.indexOf(url);
+                              return Container(
+                                width: 8,
+                                height: 8,
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 3),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: current == index
+                                      ? Colors.black
+                                      : Colors.grey,
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
                       Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.center,
                           child: Text(
-                            _workingDetail.title,
+                            _workingDetail.serviceType == 1
+                                ? bonsaiService
+                                : gardenService,
                             style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 26),
+                                fontWeight: FontWeight.bold, fontSize: 30),
                           )),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              const WidgetSpan(
-                                child:
-                                    Icon(Icons.location_on_outlined, size: 30),
-                              ),
-                              TextSpan(
-                                text: _workingDetail.location,
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 18),
-                              ),
-                            ],
-                          ),
+                      Text(
+                        "$formattedStartDate / $formattedEndDate",
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 20),
+                      ),
+                      Visibility(
+                        visible: _workingDetail.serviceType == 1,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          child: const Text('Xem chi tiết bonsai'),
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -161,6 +207,25 @@ class _DetailState extends State<Detail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                             RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Địa chỉ: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text: _workingDetail.address,
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
                               RichText(
                                 text: TextSpan(
                                   children: [
@@ -179,25 +244,6 @@ class _DetailState extends State<Detail> {
                                   ],
                                 ),
                               ),
-                               const SizedBox(height: 10),
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(
-                                      text: 'Email: ',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                          fontSize: 20),
-                                    ),
-                                    TextSpan(
-                                      text: _workingDetail.email,
-                                      style: const TextStyle(
-                                          color: Colors.black, fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
                               const SizedBox(height: 10),
                               RichText(
                                 text: TextSpan(
@@ -210,7 +256,7 @@ class _DetailState extends State<Detail> {
                                           fontSize: 20),
                                     ),
                                     TextSpan(
-                                      text: _workingDetail.phoneNumber,
+                                      text: _workingDetail.customerPhoneNumber,
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),
@@ -218,7 +264,37 @@ class _DetailState extends State<Detail> {
                                 ),
                               )
                             ]),
-                      )
+                      ),
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            minimumSize: const Size(300, 40),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Process(
+                                        contractId: widget.contractId,
+                                      )),
+                            );
+                          },
+                          child: const Text(
+                            'Cập nhật tiến độ công việc',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );

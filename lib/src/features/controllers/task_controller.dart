@@ -7,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thanhson/src/constants/colors.dart';
 
-Future<List<WorkingProcess>> fetchData() async {
+
+Future<WorkingProcess> fetchData(String contractId) async {
   {
     
     var sharedPref = await SharedPreferences.getInstance();
     String? token = sharedPref.getString('token');
     final uri = Uri.parse(
-        '${ApiConfig.baseUrl}/OrderServiceTask/GetDailyTasksForGarndener');
+        '${ApiConfig.baseUrl}/Task/$contractId');
     final response = await http.get(
       uri,
       headers: {
@@ -22,18 +23,19 @@ Future<List<WorkingProcess>> fetchData() async {
     );
 
     if (response.statusCode == 200) {
-      final dynamic jsonResponse = json.decode(response.body);
-      final List<dynamic> items = jsonResponse['items'];
-      List<WorkingProcess> workingProcesses =
-          (items).map((json) => WorkingProcess.fromJson(json)).toList();
-      return workingProcesses;
+      final jsonResponse = json.decode(response.body);
+      WorkingProcess workingProcess = WorkingProcess.fromJson(jsonResponse);
+      return workingProcess;
+    }else {
+
+      throw Exception('Failed to fetch data: ${response.statusCode}');
     }
-    return [];
+    
   }
 }
 
 Future<void> updateWorkingProcesses(
-    BuildContext context, List<WorkingProcess> processes) async {
+    BuildContext context, String contractId, List<String> finishedTasks) async {
   showDialog(
       context: context,
       builder: (context) {
@@ -45,18 +47,14 @@ Future<void> updateWorkingProcesses(
         );
       });
         try {
- List<String> orderServiceTaskIds =
-      processes.map((process) => process.id).toList();
-  List<bool> isFinishedList =
-      processes.map((process) => process.finished).toList();
   Map<String, dynamic> jsonMap = {
-    "orderServiceTaskId": orderServiceTaskIds,
-    "isFinished": isFinishedList,
+    "contractId": contractId,
+    "finishedTasks": finishedTasks,
   };
   var sharedPref = await SharedPreferences.getInstance();
   String? token = sharedPref.getString('token');
-  final uri = Uri.parse('${ApiConfig.baseUrl}/OrderServiceTask/UpdateProgress');
-  final response = await http.put(
+  final uri = Uri.parse('${ApiConfig.baseUrl}/Task/Progress');
+  final response = await http.post(
     uri,
     headers: {
       'Authorization': 'Bearer $token',
@@ -68,7 +66,6 @@ Future<void> updateWorkingProcesses(
   if (response.statusCode == 200) {
     if (!context.mounted) return;
     Navigator.of(context, rootNavigator: true).pop();
-    if (!context.mounted) return;
     Fluttertoast.showToast(
       msg: "Cập nhật thông tin thành công!",
     );

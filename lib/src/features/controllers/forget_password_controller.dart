@@ -62,7 +62,7 @@ Future otpHandler(BuildContext context, String email, String otp) async {
       });
   try {
     final uri =
-        Uri.parse('${ApiConfig.baseUrl}/Auth/OtpHandler?email=$email&otp=$otp');
+        Uri.parse('${ApiConfig.baseUrl}/Auth/OtpHandler?Email=$email&otp=$otp');
     final response = await http.get(
       uri,
     );

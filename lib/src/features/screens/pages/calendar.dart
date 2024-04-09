@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:thanhson/src/features/controllers/calendar_controller.dart';
+import 'package:thanhson/src/features/models/contract.dart';
 import 'package:thanhson/src/features/models/working_date.dart';
 import 'package:thanhson/src/features/screens/pages/detail.dart';
 
@@ -125,10 +126,8 @@ class _CalendarState extends State<Calendar> {
     List<DateTime> events = [];
 
     for (var workingDate in workingDates) {
-      // Check if the day matches the working date
-      if (day.year == workingDate.date.year &&
-          day.month == workingDate.date.month &&
-          day.day == workingDate.date.day) {
+            if ((day.day >= workingDate.startDate.day) &&
+          day.day <= workingDate.endDate.day) {
         events.add(day);
       }
     }
@@ -136,26 +135,37 @@ class _CalendarState extends State<Calendar> {
     return events;
   }
 
-  List<String> _getEventTitle(DateTime day) {
-    List<String> events = [];
+  Map<String, List<EventInfo>> _getEventsAndContractId(DateTime day) {
+  Map<String, List<EventInfo>> eventData = {};
 
-    for (var workingDate in workingDates) {
-      if (day.year == workingDate.date.year &&
-          day.month == workingDate.date.month &&
-          day.day == workingDate.date.day) {
-        events.add(workingDate.title);
+  for (var workingDate in workingDates) {
+    if ((day.day >= workingDate.startDate.day) &&
+        day.day <= workingDate.endDate.day) {
+      var eventInfo = EventInfo(
+        eventTitle: workingDate.address,
+        contractId: workingDate.contractId,
+        customerName: workingDate.customerName
+      );
+
+      if (!eventData.containsKey(workingDate.address)) {
+        eventData[workingDate.address] = [];
       }
+      eventData[workingDate.address]!.add(eventInfo);
     }
-
-    return events;
   }
 
+  return eventData;
+}
+
   Widget _buildEventsList() {
-    final events = _getEventTitle(_selectedDay ?? DateTime.now());
+    final events = _getEventsAndContractId(_selectedDay ?? DateTime.now());
+    final eventTitles = events.keys.toList();
 
     return ListView.builder(
       itemCount: events.length,
       itemBuilder: (context, index) {
+         final eventTitle = eventTitles[index];
+      final eventInfos = events[eventTitle]!;
         return ListTile(
           title: Center(
             child: GestureDetector(
@@ -165,7 +175,7 @@ class _CalendarState extends State<Calendar> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => Detail(
-                          serviceOrderId: workingDates[index].serviceOrderId),
+                          contractId: eventInfos[0].contractId),
                     ),
                   );
                 } else {
@@ -186,8 +196,11 @@ class _CalendarState extends State<Calendar> {
                   child: Column(
                     children: [
                       Text(
-                        events[index],
+                        eventInfos[0].eventTitle
                       ),
+                      Text(
+                        eventInfos[0].customerName
+                      )
                     ],
                   )),
             ),
