@@ -1,26 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/images.dart';
-import 'package:thanhson/src/constants/texts.dart';
-import 'package:thanhson/src/features/models/working_detail.dart';
+import 'package:thanhson/src/features/controllers/bonsai_controller.dart';
+import 'package:thanhson/src/features/models/bonsai.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:thanhson/src/features/controllers/calendar_controller.dart';
-import 'package:thanhson/src/features/screens/pages/bonsai_detail.dart';
-import 'package:thanhson/src/features/screens/pages/process.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:intl/intl.dart';
 
-class Detail extends StatefulWidget {
-  final String contractId;
+class BonsaiDetail extends StatefulWidget {
+  final String bonsaiId;
 
-  const Detail({required this.contractId, super.key});
+  const BonsaiDetail({required this.bonsaiId, super.key});
 
   @override
-  State<Detail> createState() => _DetailState();
+  State<BonsaiDetail> createState() => _BonsaiDetailState();
 }
 
-class _DetailState extends State<Detail> {
-  late WorkingDetail _workingDetail;
+class _BonsaiDetailState extends State<BonsaiDetail> {
+  late Bonsai _bonsai;
   late bool _loading;
   @override
   void initState() {
@@ -36,9 +31,9 @@ class _DetailState extends State<Detail> {
     setState(() {
       _loading = true;
     });
-    WorkingDetail fetchedData = await getWorkingDetail(widget.contractId);
+    Bonsai fetchedData = await getBonsai(widget.bonsaiId);
     setState(() {
-      _workingDetail = fetchedData;
+      _bonsai = fetchedData;
       _loading = false;
     });
   }
@@ -60,21 +55,9 @@ class _DetailState extends State<Detail> {
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
-            'Chi tiết',
+            'Chi tiết Bonsai',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.phone),
-              onPressed: () async {
-                final Uri url = Uri(
-                    scheme: 'tel', path: _workingDetail.customerPhoneNumber);
-                if (await canLaunchUrl(url)) {
-                  await launchUrl(url);
-                }
-              },
-            ),
-          ],
         ),
         body: FutureBuilder(
             future: null,
@@ -96,37 +79,18 @@ class _DetailState extends State<Detail> {
                 return const Center(
                   child: Text('Error fetching data'),
                 );
-              } else {
-                DateTime today = DateTime.now();
-                DateTime startDate = _workingDetail.startDate;
-                DateTime endDate = _workingDetail.endDate;
-
-                DateTime todayDate =
-                    DateTime(today.year, today.month, today.day);
-                DateTime startDateDate =
-                    DateTime(startDate.year, startDate.month, startDate.day);
-                DateTime endDateDate =
-                    DateTime(endDate.year, endDate.month, endDate.day + 1);
-                bool isButtonVisible = startDateDate.isBefore(todayDate) &&
-                        endDateDate.isAfter(todayDate) ||
-                    todayDate == startDateDate ||
-                    todayDate == endDateDate;
-                String formattedStartDate =
-                    DateFormat('dd/MM/yyyy').format(_workingDetail.startDate);
-                String formattedEndDate =
-                    DateFormat('dd/MM/yyyy').format(_workingDetail.endDate);
-
+              } else {    
                 return SafeArea(
                   child: Column(
                     children: [
-                      if (_workingDetail.images.isEmpty)
+                      if (_bonsai.bonsaiImages.isEmpty)
                         const Image(
                           image: AssetImage(notfound),
                           fit: BoxFit.cover,
                         ),
-                      if (_workingDetail.images.isNotEmpty)
+                      if (_bonsai.bonsaiImages.isNotEmpty)
                         CarouselSlider(
-                          items: _workingDetail.images
+                          items: _bonsai.bonsaiImages
                               .map((item) => SizedBox(
                                     width: double.infinity,
                                     child: Image.network(
@@ -145,12 +109,12 @@ class _DetailState extends State<Detail> {
                                 });
                               })),
                         ),
-                      if (_workingDetail.images.isNotEmpty)
+                      if (_bonsai.bonsaiImages.isNotEmpty)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            ..._workingDetail.images.map((url) {
-                              int index = _workingDetail.images.indexOf(url);
+                            ..._bonsai.bonsaiImages.map((url) {
+                              int index = _bonsai.bonsaiImages.indexOf(url);
                               return Container(
                                 width: 8,
                                 height: 8,
@@ -170,37 +134,10 @@ class _DetailState extends State<Detail> {
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           alignment: Alignment.center,
                           child: Text(
-                            _workingDetail.serviceType == 1
-                                ? bonsaiService
-                                : gardenService,
+                            _bonsai.name,
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 30),
                           )),
-                      Text(
-                        "$formattedStartDate - $formattedEndDate",
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
-                      ),
-                      Visibility(
-                        visible: _workingDetail.serviceType == 1,
-                        child: TextButton(
-                          onPressed: () {
-                           Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BonsaiDetail(
-                                          bonsaiId: _workingDetail.customerBonsaiId,
-                                        )),
-                              );
-                          },
-                          child: const Text(
-                            'Xem chi tiết bonsai',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ),
-                      ),
                       Center(
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
@@ -221,14 +158,14 @@ class _DetailState extends State<Detail> {
                                 text: TextSpan(
                                   children: [
                                     const TextSpan(
-                                      text: 'Địa chỉ: ',
+                                      text: 'Mã bonsai: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                           fontSize: 20),
                                     ),
                                     TextSpan(
-                                      text: _workingDetail.address,
+                                      text: _bonsai.code,
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),
@@ -240,14 +177,14 @@ class _DetailState extends State<Detail> {
                                 text: TextSpan(
                                   children: [
                                     const TextSpan(
-                                      text: 'Tên Khách hàng: ',
+                                      text: 'Mô tả: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                           fontSize: 20),
                                     ),
                                     TextSpan(
-                                      text: _workingDetail.customerName,
+                                      text: _bonsai.description,
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),
@@ -259,55 +196,80 @@ class _DetailState extends State<Detail> {
                                 text: TextSpan(
                                   children: [
                                     const TextSpan(
-                                      text: 'Số điện thoại: ',
+                                      text: 'Năm trồng: ',
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black,
                                           fontSize: 20),
                                     ),
                                     TextSpan(
-                                      text: _workingDetail.customerPhoneNumber,
+                                      text: _bonsai.yearOfPlanting != null ? _bonsai.yearOfPlanting.toString() : "Không có",
                                       style: const TextStyle(
                                           color: Colors.black, fontSize: 20),
                                     ),
                                   ],
                                 ),
-                              )
+                              ),
+                              const SizedBox(height: 10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Hoành: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text: _bonsai.trunkDimenter != null ? _bonsai.trunkDimenter.toString() : "Không có",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Chiều cao: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text: _bonsai.height != null ? _bonsai.height.toString() : "Không có",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              RichText(
+                                text: TextSpan(
+                                  children: [
+                                    const TextSpan(
+                                      text: 'Số thân: ',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: 20),
+                                    ),
+                                    TextSpan(
+                                      text: _bonsai.numberOfTrunk != null ? _bonsai.numberOfTrunk.toString() : "Không có",
+                                      style: const TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
                             ]),
                       ),
-                      const Expanded(
-                        child: SizedBox(),
-                      ),
-                      Visibility(
-                        visible: isButtonVisible,
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: mainColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              minimumSize: const Size(300, 40),
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Process(
-                                          contractId: widget.contractId,
-                                        )),
-                              );
-                            },
-                            child: const Text(
-                              'Cập nhật tiến độ công việc',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 );

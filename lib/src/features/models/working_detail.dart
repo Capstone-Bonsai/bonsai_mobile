@@ -1,5 +1,6 @@
 class WorkingDetail{
   final String id;
+  final String customerBonsaiId;
   final List<String> images;
   final String address;
   final String customerName;
@@ -9,6 +10,7 @@ class WorkingDetail{
   final int serviceType;
   WorkingDetail({
     required this.id,
+    required this.customerBonsaiId,
     required this.images,
     required this.address,
     required this.customerName,
@@ -20,6 +22,7 @@ class WorkingDetail{
   factory WorkingDetail.fromJson(Map<String, dynamic> json) {
     return WorkingDetail(
       id: json['id'] ?? "",
+      customerBonsaiId: json['customerBonsaiId'] ?? "",
       images: List<String>.from((json['image'] as List<dynamic>? ?? []).map((image) => image.toString())),
       address: json['address'] ?? "",
       customerName: json['customerName'] ?? "", 

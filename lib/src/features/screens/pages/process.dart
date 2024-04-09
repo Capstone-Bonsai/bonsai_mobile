@@ -16,7 +16,7 @@ class Process extends StatefulWidget {
 class _ProcessState extends State<Process> {
   late WorkingProcess _workingProcess;
   late bool _loading;
-  List<String> _taskId = [];
+  final List<String> _taskId = [];
   bool _firstLoading = true;
 
   @override
