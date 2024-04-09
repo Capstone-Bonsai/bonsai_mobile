@@ -1,5 +1,4 @@
 class Bonsai{
-  final String id;
   final List<String> bonsaiImages;
   final String name;
   final String code;
@@ -9,7 +8,6 @@ class Bonsai{
   final int? height;
   final int? numberOfTrunk;
   Bonsai({
-    required this.id,
     required this.bonsaiImages,
     required this.name,
     required this.code,
@@ -20,16 +18,18 @@ class Bonsai{
     this.numberOfTrunk
   });
   factory Bonsai.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> bonsaiJson = json['bonsai'];
     return Bonsai(
-      id: json['bonsai']['id'] ?? "",
-      bonsaiImages: List<String>.from((json['bonsai']['bonsaiImages'] as List<dynamic>? ?? []).map((image) => image.toString())),
-      name: json['bonsai']['name'] ?? "",
-      code: json['bonsai']['code'] ?? "", 
-      description: json['bonsai']['description'] ?? "",
-      yearOfPlanting: json['bonsai']['yearOfPlanting'],
-      trunkDimenter: json['bonsai']['trunkDimenter'],
-      height: json['bonsai']['height'],
-      numberOfTrunk: json['bonsai']['numberOfTrunk']
+       bonsaiImages: (bonsaiJson['bonsaiImages'] as List<dynamic>?)
+        ?.map((image) => image['imageUrl'].toString())
+        .toList() ?? [],
+      name: bonsaiJson['name'] ?? "",
+      code: bonsaiJson['code'] ?? "", 
+      description: bonsaiJson['description'] ?? "",
+      yearOfPlanting: bonsaiJson['yearOfPlanting'],
+      trunkDimenter: bonsaiJson['trunkDimenter'],
+      height: bonsaiJson['height'],
+      numberOfTrunk: bonsaiJson['numberOfTrunk']
     );
   }
 }
