@@ -33,7 +33,7 @@ Future<WorkingDetail> getWorkingDetail(String id) async {
     try {
       var sharedPref = await SharedPreferences.getInstance();
       String? token = sharedPref.getString('token');
-      final uri = Uri.parse('${ApiConfig.baseUrl}/Contract/$id');
+      final uri = Uri.parse('${ApiConfig.baseUrl}/Contract/Gardener/$id');
       final response = await http.get(
         uri,
         headers: {

@@ -5,6 +5,7 @@ class WorkingDate {
   final String customerName;
   final String customerPhoneNumber;
   final String address;
+  final int contractStatus;
   WorkingDate({
     required this.contractId,
     required this.startDate,
@@ -12,6 +13,7 @@ class WorkingDate {
     required this.customerName,
     required this.customerPhoneNumber,
     required this.address,
+    required this.contractStatus
   });
   factory WorkingDate.fromJson(Map<String, dynamic> json) {
     return WorkingDate(
@@ -20,6 +22,7 @@ class WorkingDate {
         endDate: DateTime.parse(json['endDate']),
         customerName: json['customerName'],
         customerPhoneNumber: json['customerPhoneNumber'],
-        address: json['address']);
+        address: json['address'],
+        contractStatus: json['contractStatus']);
   }
 }

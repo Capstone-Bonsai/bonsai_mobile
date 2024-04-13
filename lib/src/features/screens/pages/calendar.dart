@@ -126,7 +126,7 @@ class _CalendarState extends State<Calendar> {
     List<DateTime> events = [];
 
     for (var workingDate in workingDates) {
-            if ((day.day >= workingDate.startDate.day) &&
+      if ((day.day >= workingDate.startDate.day) &&
           day.day <= workingDate.endDate.day) {
         events.add(day);
       }
@@ -136,26 +136,26 @@ class _CalendarState extends State<Calendar> {
   }
 
   Map<String, List<EventInfo>> _getEventsAndContractId(DateTime day) {
-  Map<String, List<EventInfo>> eventData = {};
+    Map<String, List<EventInfo>> eventData = {};
 
-  for (var workingDate in workingDates) {
-    if ((day.day >= workingDate.startDate.day) &&
-        day.day <= workingDate.endDate.day) {
-      var eventInfo = EventInfo(
-        eventTitle: workingDate.address,
-        contractId: workingDate.contractId,
-        customerName: workingDate.customerName
-      );
+    for (var workingDate in workingDates) {
+      if ((day.day >= workingDate.startDate.day) &&
+          day.day <= workingDate.endDate.day) {
+        var eventInfo = EventInfo(
+            eventTitle: workingDate.address,
+            contractId: workingDate.contractId,
+            customerName: workingDate.customerName,
+            contractStatus: workingDate.contractStatus);
 
-      if (!eventData.containsKey(workingDate.address)) {
-        eventData[workingDate.address] = [];
+        if (!eventData.containsKey(workingDate.address)) {
+          eventData[workingDate.address] = [];
+        }
+        eventData[workingDate.address]!.add(eventInfo);
       }
-      eventData[workingDate.address]!.add(eventInfo);
     }
-  }
 
-  return eventData;
-}
+    return eventData;
+  }
 
   Widget _buildEventsList() {
     final events = _getEventsAndContractId(_selectedDay ?? DateTime.now());
@@ -164,8 +164,8 @@ class _CalendarState extends State<Calendar> {
     return ListView.builder(
       itemCount: events.length,
       itemBuilder: (context, index) {
-         final eventTitle = eventTitles[index];
-      final eventInfos = events[eventTitle]!;
+        final eventTitle = eventTitles[index];
+        final eventInfos = events[eventTitle]!;
         return ListTile(
           title: Center(
             child: GestureDetector(
@@ -174,8 +174,8 @@ class _CalendarState extends State<Calendar> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => Detail(
-                          contractId: eventInfos[0].contractId),
+                      builder: (context) =>
+                          Detail(contractId: eventInfos[0].contractId),
                     ),
                   );
                 } else {
@@ -195,12 +195,26 @@ class _CalendarState extends State<Calendar> {
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     children: [
-                      Text(
-                        eventInfos[0].eventTitle
-                      ),
-                      Text(
-                        eventInfos[0].customerName
-                      )
+                      if (eventInfos.isNotEmpty &&
+                          eventInfos[0].contractStatus == 9)
+                        const Text("Xử lý khiếu nại",
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+                         if (eventInfos.isNotEmpty &&
+                          (eventInfos[0].contractStatus == 6 || eventInfos[0].contractStatus == 11))
+                        const Text("Đã hoàn thành công việc",
+                        style: TextStyle(
+                          color: Colors.green
+                        ),),
+                        if (eventInfos.isNotEmpty &&
+                          eventInfos[0].contractStatus == 7)
+                        const Text("Đã hoàn thành",
+                        style: TextStyle(
+                          color: Colors.green
+                        ),),
+                      Text(eventInfos[0].eventTitle),
+                      Text(eventInfos[0].customerName)
                     ],
                   )),
             ),

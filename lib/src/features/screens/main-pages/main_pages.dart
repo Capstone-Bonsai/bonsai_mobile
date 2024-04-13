@@ -26,15 +26,11 @@ class _MainPagesState extends State<MainPages> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
-            label: 'Working Calendar',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.check_box_outlined),
-            label: 'Today Tasks',
+            label: 'Lịch làm việc',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings_outlined),
-            label: 'Settings',
+            label: 'Cài đặt',
           ),
         ],
         activeColor: mainColor,
@@ -59,15 +55,7 @@ class _MainPagesState extends State<MainPages> {
                 );
               },
             );
-          // case 1:
-          //   return CupertinoTabView(
-          //     builder: (context) {
-          //       // return const SafeArea(
-          //       //   child: CupertinoPageScaffold(child: Process()),
-          //       // );
-          //     },
-          //   );
-          case 2:
+          case 1:
             return CupertinoTabView(
               builder: (context) {
                 return const SafeArea(

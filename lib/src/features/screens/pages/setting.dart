@@ -101,12 +101,7 @@ class _SettingState extends State<Setting> {
                             fontSize: 20,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Box(
-                          titleString: 'Quản lý thông tin',
-                          onPressedCallback: () {},
-                        ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 100),
                         Box(
                           titleString: 'Đổi mật khẩu',
                           onPressedCallback: () {

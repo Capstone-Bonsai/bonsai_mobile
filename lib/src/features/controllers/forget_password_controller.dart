@@ -23,7 +23,7 @@ Future checkEmail(BuildContext context, String email) async {
       });
   try {
     final uri = Uri.parse(
-        '${ApiConfig.baseUrl}/Auth/ForgotPasswordForMobile?email=$email');
+        '${ApiConfig.baseUrl}/Auth/ForgotPassword?email=$email');
     final response = await http.post(
       uri,
     );
@@ -131,7 +131,7 @@ Future resetPassword(BuildContext context, String email, String otp,
       "newPassword": newPassword,
       "confirmPassword": confirmPassword,
     };
-    final uri = Uri.parse('${ApiConfig.baseUrl}/Auth/ResetPasswordForMobile');
+    final uri = Uri.parse('${ApiConfig.baseUrl}/Auth/ResetPassword');
     final response = await http.post(
       uri,
       headers: {

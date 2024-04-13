@@ -44,10 +44,11 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Image(
+                const Center(
+                    child: Image(
                   image: AssetImage(logo),
-                  height: 150,
-                ),
+                  height: 200,
+                )),
                 const SizedBox(
                   height: 20,
                 ),
@@ -61,7 +62,7 @@ class _CodeForResetPasswordState extends State<CodeForResetPassword> {
                   height: 20,
                 ),
                 const Text(
-                    "We have sent a code to your email for reset password:"),
+                    "Chúng tôi đã gửi mã tới email của bạn để đặt lại mật khẩu:"),
                 const SizedBox(
                   height: 10,
                 ),

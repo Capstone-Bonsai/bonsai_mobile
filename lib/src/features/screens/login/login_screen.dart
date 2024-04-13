@@ -192,17 +192,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       rememberUser = value!;
                     });
+                  
                   }),
             ),
             const Text(
-              "Remember me",
+              "Ghi nhớ tôi",
               style: TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ],
         ),
         GestureDetector(
             onTap: () {
-              // Navigate to another page when the container is clicked
               Navigator.push(
                 context,
                 MaterialPageRoute(

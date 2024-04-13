@@ -5,7 +5,6 @@ import 'package:thanhson/src/constants/images.dart';
 import 'package:thanhson/src/features/controllers/forget_password_controller.dart';
 
 class AddNewPassword extends StatefulWidget {
-
   final String email;
   final String otp;
 
@@ -44,9 +43,13 @@ class _AddNewPasswordState extends State<AddNewPassword> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Image(
+              const Center(
+                  child: Image(
                 image: AssetImage(logo),
-                height: 150,
+                height: 200,
+              )),
+              const SizedBox(
+                height: 20,
               ),
               const Center(
                 child: Text(
@@ -76,7 +79,8 @@ class _AddNewPasswordState extends State<AddNewPassword> {
                   onPressed: () {
                     String newPassword = passwordController.text;
                     String confirmPassword = passwordConfirmController.text;
-                    resetPassword(context, widget.email, widget.otp, newPassword, confirmPassword);
+                    resetPassword(context, widget.email, widget.otp,
+                        newPassword, confirmPassword);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: mainColor,

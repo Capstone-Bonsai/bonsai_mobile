@@ -40,10 +40,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Image(
+                      const Center(
+                          child: Image(
                         image: AssetImage(logo),
-                        height: 150,
-                      ),
+                        height: 200,
+                      )),
                       const SizedBox(
                         height: 20,
                       ),

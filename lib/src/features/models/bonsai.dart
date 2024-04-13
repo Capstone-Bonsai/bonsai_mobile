@@ -5,7 +5,7 @@ class Bonsai{
   final String description;
   final int? yearOfPlanting;
   final int? trunkDimenter;
-  final int? height;
+  final double? height;
   final int? numberOfTrunk;
   Bonsai({
     required this.bonsaiImages,
