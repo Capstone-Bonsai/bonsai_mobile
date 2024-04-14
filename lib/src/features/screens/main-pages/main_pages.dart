@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/features/screens/pages/calendar.dart';
+import 'package:thanhson/src/features/screens/pages/order_list.dart';
 import 'package:thanhson/src/features/screens/pages/setting.dart';
 
 class MainPages extends StatefulWidget {
@@ -24,6 +25,10 @@ class _MainPagesState extends State<MainPages> {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.delivery_dining_outlined),
+            label: 'Đơn cần giao',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_month_outlined),
             label: 'Lịch làm việc',
@@ -51,11 +56,19 @@ class _MainPagesState extends State<MainPages> {
             return CupertinoTabView(
               builder: (context) {
                 return const SafeArea(
-                  child: CupertinoPageScaffold(child: Calendar()),
+                  child: CupertinoPageScaffold(child: OrderList()),
                 );
               },
             );
           case 1:
+            return CupertinoTabView(
+              builder: (context) {
+                return const SafeArea(
+                  child: CupertinoPageScaffold(child: Calendar()),
+                );
+              },
+            );
+          case 2:
             return CupertinoTabView(
               builder: (context) {
                 return const SafeArea(
