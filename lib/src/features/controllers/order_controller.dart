@@ -7,8 +7,9 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-Future<List<Order>> fetchData() async {
+Future<List<Order>> fetchData(BuildContext context) async {
   {
+    EasyLoading.show(status: 'Đang xử lý...');
     var sharedPref = await SharedPreferences.getInstance();
     String? token = sharedPref.getString('token');
     final uri = Uri.parse('${ApiConfig.baseUrl}/Order?pageIndex=0&pageSize=5');
@@ -20,6 +21,7 @@ Future<List<Order>> fetchData() async {
     );
 
     if (response.statusCode == 200) {
+      EasyLoading.dismiss();
       final dynamic jsonResponse = json.decode(response.body);
       int count = jsonResponse['totalItemsCount'];
       if (count > 0) {
@@ -27,8 +29,10 @@ Future<List<Order>> fetchData() async {
         List<Order> orders = (bonsaiJsonList as List)
             .map((json) => Order.fromJson(json))
             .toList();
+
         return orders;
       }
+      EasyLoading.dismiss();
     }
     return [];
   }
@@ -59,7 +63,8 @@ Future<Order> getOrder(String id) async {
   }
 }
 
-Future<void> sendImagesToAPI(BuildContext context, orderId, List<XFile> imageFileList) async {
+Future<void> sendImagesToAPI(
+    BuildContext context, orderId, List<XFile> imageFileList) async {
   EasyLoading.show(status: 'Đang xử lý...');
   var sharedPref = await SharedPreferences.getInstance();
   String? token = sharedPref.getString('token');
@@ -79,7 +84,7 @@ Future<void> sendImagesToAPI(BuildContext context, orderId, List<XFile> imageFil
     var streamedResponse = await request.send();
     var response = await http.Response.fromStream(streamedResponse);
 
-     if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       EasyLoading.dismiss();
       if (!context.mounted) return;
       showDialog(
@@ -121,7 +126,7 @@ Future<void> sendImagesToAPI(BuildContext context, orderId, List<XFile> imageFil
       );
     }
   } catch (e) {
-   EasyLoading.dismiss(); // Dismiss loading indicator
+    EasyLoading.dismiss(); // Dismiss loading indicator
     if (!context.mounted) return;
     showDialog(
       context: context,

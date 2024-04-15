@@ -10,11 +10,11 @@ class OrderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Card(
-       elevation: 2,
-       shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.zero,
-    ),
+    return Card(
+      elevation: 2,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -23,24 +23,69 @@ class OrderWidget extends StatelessWidget {
           children: [
             Text(
               order.customerName,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            Text('Địa chỉ: ${order.address}'),
-            const SizedBox(height: 4),
-            Text('Phương tiện: ${order.deliveryType}'),
-            const SizedBox(height: 4),
-            Text('Ngày đặt hàng: ${DateFormat('dd/MM/yyyy').format(order.orderDate)}'),
-             SizedBox(
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Địa chỉ: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,),
+                  ),
+                  TextSpan(
+                    text: order.address,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Phương tiện: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,),
+                  ),
+                  TextSpan(
+                    text: order.deliveryType,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(
+                    text: 'Ngày đặt hàng: ',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,),
+                  ),
+                  TextSpan(
+                    text: DateFormat('dd/MM/yyyy').format(order.orderDate),
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
               child: ListView.builder(
                 shrinkWrap: true, // Use shrinkWrap property
                 itemCount: order.bonsaiDetail.length,
                 itemBuilder: (context, index) {
-                  return BonsaiDetailWidget(bonsaiDetail: order.bonsaiDetail[index]);
+                  return BonsaiDetailWidget(
+                      bonsaiDetail: order.bonsaiDetail[index]);
                 },
-              ),)
+              ),
+            )
           ],
         ),
       ),

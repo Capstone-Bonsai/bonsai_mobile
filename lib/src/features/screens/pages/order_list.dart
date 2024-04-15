@@ -14,7 +14,6 @@ class OrderList extends StatefulWidget {
 
 class _OrderListState extends State<OrderList> {
   List<Order> orders = [];
-  late bool _loading;
   @override
   void initState() {
     super.initState();
@@ -22,95 +21,66 @@ class _OrderListState extends State<OrderList> {
   }
 
   Future<void> initializeData() async {
-    setState(() {
-      _loading = true;
-    });
-    List<Order> fetchedData = await fetchData();
+    List<Order> fetchedData = await fetchData(context);
     setState(() {
       orders = fetchedData;
-      _loading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+   final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: greyColor,
           automaticallyImplyLeading: false,
           centerTitle: true,
           title: const Text(
-            'Đơn cần giao',
+            'Đơn hàng cần giao',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
           ),
         ),
-        body:  _loading
-            ? _buildLoadingIndicator()
-            : RefreshIndicator(
-                onRefresh: initializeData,
-                backgroundColor: greyColor,
-                color: mainColor,
-                child:  FutureBuilder(
-            future: null,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting ||
-                  _loading) {
-                return const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 200),
-                    Center(
-                      child: CircularProgressIndicator(
-                        color: mainColor,
-                      ),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return const Center(
-                  child: Text('Error fetching data'),
-                );
-              } else {
-                return (orders.isEmpty || orders == [])
-                    ? const Center(
-                        child: SizedBox(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text('Bạn không có đơn hàng nào trong hôm nay'),
-                            ],
-                          ),
-                        ),
-                      )
-                    : Container(
-                        color: greyColor,
-                        child: ListView.builder(
-                          itemCount: orders.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => OrderDetail(
-                                        orderId: orders[index].orderId),
-                                  ),
-                                );
-                              },
-                              child: OrderWidget(order: orders[index]),
+        body: RefreshIndicator(
+            onRefresh: initializeData,
+            backgroundColor: greyColor,
+            color: mainColor,
+            child: (orders.isEmpty || orders == [])
+                ? Center(
+                    child: SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            child: Center(
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: screenHeight / 3,
+                                    ),
+                                    const Text(
+                                        'Bạn không có đơn hàng nào trong ngày hôm nay')
+                                  ]),
+                            ))))
+                : Container(
+                    color: greyColor,
+                    child: ListView.builder(
+                      itemCount: orders.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    OrderDetail(orderId: orders[index].orderId),
+                              ),
                             );
                           },
-                        ),
-                      );
-              }
-            })));
-  }
-  Widget _buildLoadingIndicator() {
-    return const Center(
-      child: CircularProgressIndicator(
-        color: mainColor,
-        backgroundColor: greyColor,
-      ),
-    );
+                          child: OrderWidget(order: orders[index]),
+                        );
+                      },
+                    ),
+                  )));
   }
 }
