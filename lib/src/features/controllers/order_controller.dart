@@ -32,8 +32,13 @@ Future<List<Order>> fetchData(BuildContext context) async {
 
         return orders;
       }
-      EasyLoading.dismiss();
+      else{
+        EasyLoading.dismiss();
+        return [];
+      }
+
     }
+    EasyLoading.dismiss();
     return [];
   }
 }

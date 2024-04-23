@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/features/controllers/login_controllers.dart';
 import 'dart:io';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -36,7 +37,11 @@ class App extends StatelessWidget {
         '/': (context) => FutureBuilder(
               future: autoLoginFuture(context),
               builder: (context, snapshot) {
-                  return const CircularProgressIndicator();
+                  return const Center(
+                      child: CircularProgressIndicator(
+                        color: mainColor,
+                      ),
+                    );
               },
             ),
       },

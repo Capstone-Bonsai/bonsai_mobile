@@ -4,16 +4,16 @@ import 'package:thanhson/src/features/models/working_process.dart';
 import 'package:thanhson/src/features/controllers/task_controller.dart';
 import 'package:thanhson/src/features/widgets/task.dart';
 
-class Process extends StatefulWidget {
+class Progress extends StatefulWidget {
   final String contractId;
 
-  const Process({required this.contractId, super.key});
+  const Progress({required this.contractId, super.key});
 
   @override
-  State<Process> createState() => _ProcessState();
+  State<Progress> createState() => _ProgressState();
 }
 
-class _ProcessState extends State<Process> {
+class _ProgressState extends State<Progress> {
   late WorkingProcess _workingProcess;
   late bool _loading;
   final List<String> _taskId = [];
@@ -114,8 +114,30 @@ class _ProcessState extends State<Process> {
                               minimumSize: const Size(300, 40),
                             ),
                             onPressed: () {
-                              updateWorkingProcesses(
-                                  context, widget.contractId, _taskId);
+                              if (_taskId.isNotEmpty) {
+                                updateWorkingProcesses(
+                                    context, widget.contractId, _taskId);
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Thông báo"),
+                                      content:
+                                          const Text("Chưa chọn công việc nào"),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                          },
+                                          child: const Text("OK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: const Text(
                               'Cập nhật',

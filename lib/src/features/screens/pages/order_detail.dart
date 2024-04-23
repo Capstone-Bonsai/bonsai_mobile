@@ -55,33 +55,33 @@ class _OrderDetailState extends State<OrderDetail> {
     });
   }
 
+  String _getTextForOrderStatus(int phoneNumber) {
+    switch (phoneNumber) {
+      case 3:
+        return 'Đang chuẩn bị hàng';
+      case 4:
+        return 'Đang giao hàng';
+      case 5:
+        return 'Đã giao hàng';
+      case 6:
+        return 'Giao hàng thất bại';
+      // Add more cases as needed
+      default:
+        return 'Không rõ';
+    }
+  }
+
+  Color _getColorForOrderStatus(int status) {
+    switch (status) {
+      case 6:
+        return Colors.red;
+      default:
+        return Colors.green;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    String _getTextForOrderStatus(int phoneNumber) {
-      switch (phoneNumber) {
-        case 3:
-          return 'Đang chuẩn bị hàng';
-        case 4:
-          return 'Đang giao hàng';
-        case 5:
-          return 'Đã giao hàng';
-        case 6:
-          return 'Giao hàng thất bại';
-        // Add more cases as needed
-        default:
-          return 'Không rõ';
-      }
-    }
-
-    Color _getColorForOrderStatus(int status) {
-      switch (status) {
-        case 6:
-          return Colors.red;
-        default:
-          return Colors.green;
-      }
-    }
-
     return Scaffold(
         backgroundColor: greyColor,
         appBar: AppBar(
@@ -310,7 +310,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                   builder: (context) =>
                                                       AlertDialog(
                                                         title: const Text(
-                                                            'Bạn có chắc đơn hàng đang trên đường giao tới khách hàng?'),
+                                                            'Bạn có chắc đơn hàng đang trên đường giao tới khách hàng?',
+                                                            style: TextStyle(
+                                                                fontSize: 20
+                                                              ),),
                                                         actions: <Widget>[
                                                           TextButton(
                                                             style: TextButton
@@ -376,7 +379,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 builder: (context) =>
                                                     AlertDialog(
                                                       title: const Text(
-                                                          'Bạn có chắc chắn đơn hàng giao không thành công không?'),
+                                                          'Bạn có chắc chắn đơn hàng giao không thành công?',
+                                                          style: TextStyle(
+                                                                fontSize: 20
+                                                              ),),
                                                       actions: <Widget>[
                                                         TextButton(
                                                           style: TextButton
@@ -441,7 +447,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 builder:
                                                     (context) => AlertDialog(
                                                           title: const Text(
-                                                              'Bạn có chắc chắn đơn hàng giao không thành công không?'),
+                                                              'Bạn có chắc chắn đơn hàng giao thành công?',
+                                                              style: TextStyle(
+                                                                fontSize: 20
+                                                              ),),
                                                           actions: <Widget>[
                                                             TextButton(
                                                               style: TextButton

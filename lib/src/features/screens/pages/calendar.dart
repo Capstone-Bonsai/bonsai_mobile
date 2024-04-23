@@ -145,7 +145,7 @@ class _CalendarState extends State<Calendar> {
             eventTitle: workingDate.address,
             contractId: workingDate.contractId,
             customerName: workingDate.customerName,
-            contractStatus: workingDate.contractStatus);
+            contractStatus: workingDate.serviceOrderStatus);
 
         if (!eventData.containsKey(workingDate.address)) {
           eventData[workingDate.address] = [];

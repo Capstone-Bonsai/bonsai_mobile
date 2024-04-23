@@ -6,7 +6,7 @@ import 'package:thanhson/src/features/models/working_detail.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:thanhson/src/features/controllers/calendar_controller.dart';
 import 'package:thanhson/src/features/screens/pages/bonsai_detail.dart';
-import 'package:thanhson/src/features/screens/pages/process.dart';
+import 'package:thanhson/src/features/screens/pages/progress.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
 
@@ -294,7 +294,7 @@ class _DetailState extends State<Detail> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Process(
+                                    builder: (context) => Progress(
                                           contractId: widget.contractId,
                                         )),
                               );

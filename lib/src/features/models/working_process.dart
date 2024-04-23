@@ -12,11 +12,11 @@ class WorkingProcess {
   });
 
   factory WorkingProcess.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> taskList = json['taskOfContracts'];
+    final List<dynamic> taskList = json['taskOfServiceOrders'];
     List<ServiceTask> tasks = taskList.map((taskJson) => ServiceTask.fromJson(taskJson)).toList();
 
     return WorkingProcess(
-      id: json['contractId'],
+      id: json['serviceOrderId'],
       customerName: json['customerName'],
       address: json['address'],
       serviceTasks: tasks, 

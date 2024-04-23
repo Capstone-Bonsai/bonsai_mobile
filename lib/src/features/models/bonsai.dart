@@ -28,7 +28,7 @@ class Bonsai{
       description: bonsaiJson['description'] ?? "",
       yearOfPlanting: bonsaiJson['yearOfPlanting'],
       trunkDimenter: bonsaiJson['trunkDimenter'],
-      height: bonsaiJson['height'],
+      height: bonsaiJson['height'].toDouble(),
       numberOfTrunk: bonsaiJson['numberOfTrunk']
     );
   }

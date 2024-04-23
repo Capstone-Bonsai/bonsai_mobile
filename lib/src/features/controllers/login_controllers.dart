@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:thanhson/src/features/models/jwt_token_response.dart';
 import 'package:thanhson/src/features/widgets/alert_dialog.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 late Box box1;
 Future loginFuture(BuildContext context, String email, String password,
@@ -46,6 +47,13 @@ Future loginFuture(BuildContext context, String email, String password,
           box1.put('password', password);
         }
         if (!context.mounted) return;
+        Fluttertoast.showToast(
+          msg: "Đăng nhập thành công!",
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+          fontSize: 12.0,
+        );
         Navigator.of(context).pop();
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -58,7 +66,7 @@ Future loginFuture(BuildContext context, String email, String password,
         Navigator.of(context).pop();
         CustomAlertDialog.show(
           context,
-          "Lỗi đăng nhập",
+          "Đăng nhập không thành công",
           "Chỉ nhân viên làm vườn mới đăng nhập được vào app này!",
         );
       }
@@ -130,14 +138,14 @@ Future<void> autoLoginFuture(BuildContext context) async {
         CustomAlertDialog.show(
           context,
           "Lỗi đăng nhập",
-          "Chỉ nhân viên làm vườn mới đăng nhập được vào app này!",
+          "Chỉ nhân viên làm vườn mới đăng nhập được vào ứng dụng này!",
         );
       }
     } else {
-    if (!context.mounted) return;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => const LoginScreen()),
-    );
+      if (!context.mounted) return;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
     }
   } catch (error) {
     if (!context.mounted) return;

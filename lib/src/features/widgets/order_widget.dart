@@ -47,23 +47,6 @@ class OrderWidget extends StatelessWidget {
               text: TextSpan(
                 children: [
                   const TextSpan(
-                    text: 'Phương tiện: ',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,),
-                  ),
-                  TextSpan(
-                    text: order.deliveryType,
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            RichText(
-              text: TextSpan(
-                children: [
-                  const TextSpan(
                     text: 'Ngày đặt hàng: ',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,

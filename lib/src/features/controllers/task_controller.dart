@@ -8,13 +8,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:thanhson/src/constants/colors.dart';
 
 
-Future<WorkingProcess> fetchData(String contractId) async {
+Future<WorkingProcess> fetchData(String serviceOrderId) async {
   {
     
     var sharedPref = await SharedPreferences.getInstance();
     String? token = sharedPref.getString('token');
     final uri = Uri.parse(
-        '${ApiConfig.baseUrl}/Task/$contractId');
+        '${ApiConfig.baseUrl}/Task/$serviceOrderId');
     final response = await http.get(
       uri,
       headers: {
@@ -35,7 +35,7 @@ Future<WorkingProcess> fetchData(String contractId) async {
 }
 
 Future<void> updateWorkingProcesses(
-    BuildContext context, String contractId, List<String> finishedTasks) async {
+    BuildContext context, String serviceOrderId, List<String> finishedTasks) async {
   showDialog(
       context: context,
       builder: (context) {
@@ -48,7 +48,7 @@ Future<void> updateWorkingProcesses(
       });
         try {
   Map<String, dynamic> jsonMap = {
-    "contractId": contractId,
+    "serviceOrderId": serviceOrderId,
     "finishedTasks": finishedTasks,
   };
   var sharedPref = await SharedPreferences.getInstance();
@@ -68,6 +68,13 @@ Future<void> updateWorkingProcesses(
     Navigator.of(context, rootNavigator: true).pop();
     Fluttertoast.showToast(
       msg: "Cập nhật thông tin thành công!",
+    );
+  }
+  else{
+    if (!context.mounted) return;
+    Navigator.of(context, rootNavigator: true).pop();
+    Fluttertoast.showToast(
+      msg: response.body          ,
     );
   }
   } catch (e) {
