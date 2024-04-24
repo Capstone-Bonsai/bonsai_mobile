@@ -31,7 +31,6 @@ class Order {
   final String orderId;
   final String address;
   final String customerPhoneNumber;
-  final String deliveryType;
   final String customerName;
   final int numberOfBonsai;
   final DateTime orderDate;
@@ -40,7 +39,6 @@ class Order {
   Order(
       {required this.orderId,
       required this.address,
-      required this.deliveryType,
       required this.customerPhoneNumber,
       required this.customerName,
       required this.numberOfBonsai,
@@ -51,8 +49,6 @@ class Order {
     List<dynamic> bonsaiJsonList = json['orderDetails'] ?? [];
     var bonsaiDetail =
         bonsaiJsonList.map((e) => BonsaiDetail.fromJson(e)).toList();
-    var deliveryType =
-        json.containsKey('deliveryType') ? json['deliveryType'] : "";
     int convertStatusToNumber(String orderStatus) {
       try {
         return int.parse(orderStatus);
@@ -71,7 +67,6 @@ class Order {
     return Order(
       orderId: json['id'],
       address: json['address'] ?? "",
-      deliveryType: deliveryType.toString(),
       customerName: json['customer']['applicationUser']['fullname'] ?? "",
       customerPhoneNumber:
           json['customer']['applicationUser']['phoneNumber'] ?? "",

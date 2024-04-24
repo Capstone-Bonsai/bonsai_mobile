@@ -493,7 +493,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                                                         title: const Text(
                                                                             "Đã xảy ra lỗi!"),
                                                                         content:
-                                                                            const Text("Vui lòng thêm ảnh giao hàng"),
+                                                                            const Text("Vui lòng thêm ảnh giao hàng."),
                                                                         actions: [
                                                                           TextButton(
                                                                             onPressed:
