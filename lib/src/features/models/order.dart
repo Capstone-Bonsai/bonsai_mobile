@@ -71,7 +71,7 @@ class Order {
       customerPhoneNumber:
           json['customer']['applicationUser']['phoneNumber'] ?? "",
       numberOfBonsai: bonsaiJsonList.length,
-      orderDate: DateTime.parse(json['orderDate']),
+      orderDate: DateTime.parse(json['creationDate']),
       bonsaiDetail: bonsaiDetail,
       orderStatus: convertStatusToNumber(json['orderStatus'].toString()),
     );

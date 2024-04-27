@@ -89,7 +89,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
           ],
         ));
-  }
+  }}
 
   Widget _buildInputField(String text, TextEditingController controller) {
     return TextFormField(
@@ -105,4 +105,3 @@ class _ForgetPasswordState extends State<ForgetPassword> {
           )),
     );
   }
-}

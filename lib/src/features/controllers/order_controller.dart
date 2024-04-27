@@ -83,7 +83,6 @@ Future<void> sendImagesToAPI(
       filename: imageFile.name,
     );
     request.files.add(multipartFile);
-    request.headers['Authorization'] = 'Bearer $token';
   }
   try {
     var streamedResponse = await request.send();

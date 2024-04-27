@@ -65,7 +65,7 @@ class _OrderDetailState extends State<OrderDetail> {
         return 'Đã giao hàng';
       case 6:
         return 'Giao hàng thất bại';
-      // Add more cases as needed
+
       default:
         return 'Không rõ';
     }
@@ -271,26 +271,68 @@ class _OrderDetailState extends State<OrderDetail> {
                                           scrollDirection: Axis.horizontal,
                                           child: Row(
                                             children: List.generate(
-                                                imageFileList.length, (index) {
-                                              return Container(
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 4),
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: Colors.black,
-                                                    width: 1,
-                                                  ),
-                                                ),
-                                                child: Image.file(
-                                                  File(imageFileList[index]
-                                                      .path),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              );
-                                            }),
+                                              imageFileList.length,
+                                              (index) {
+                                                return Row(
+                                                  children: [
+                                                    Container(
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 4),
+                                                      width: 100,
+                                                      height: 100,
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                          color: Colors.black,
+                                                          width: 1,
+                                                        ),
+                                                      ),
+                                                      child: Stack(
+                                                        children: [
+                                                          Positioned.fill(
+                                                            child: Image.file(
+                                                              File(
+                                                                  imageFileList[
+                                                                          index]
+                                                                      .path),
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                          Positioned(
+                                                            top: 0,
+                                                            right: 0,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                // Delete image from the list
+                                                                setState(() {
+                                                                  imageFileList
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(4),
+                                                                color: Colors
+                                                                    .red, // Customize as needed
+                                                                child:
+                                                                    const Icon(
+                                                                  Icons.delete,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -310,10 +352,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                   builder: (context) =>
                                                       AlertDialog(
                                                         title: const Text(
-                                                            'Bạn có chắc đơn hàng đang trên đường giao tới khách hàng?',
-                                                            style: TextStyle(
-                                                                fontSize: 20
-                                                              ),),
+                                                          'Bạn có chắc đơn hàng đang trên đường giao tới khách hàng?',
+                                                          style: TextStyle(
+                                                              fontSize: 20),
+                                                        ),
                                                         actions: <Widget>[
                                                           TextButton(
                                                             style: TextButton
@@ -379,10 +421,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 builder: (context) =>
                                                     AlertDialog(
                                                       title: const Text(
-                                                          'Bạn có chắc chắn đơn hàng giao không thành công?',
-                                                          style: TextStyle(
-                                                                fontSize: 20
-                                                              ),),
+                                                        'Bạn có chắc chắn đơn hàng giao không thành công?',
+                                                        style: TextStyle(
+                                                            fontSize: 20),
+                                                      ),
                                                       actions: <Widget>[
                                                         TextButton(
                                                           style: TextButton
@@ -447,10 +489,10 @@ class _OrderDetailState extends State<OrderDetail> {
                                                 builder:
                                                     (context) => AlertDialog(
                                                           title: const Text(
-                                                              'Bạn có chắc chắn đơn hàng giao thành công?',
-                                                              style: TextStyle(
-                                                                fontSize: 20
-                                                              ),),
+                                                            'Bạn có chắc chắn đơn hàng giao thành công?',
+                                                            style: TextStyle(
+                                                                fontSize: 20),
+                                                          ),
                                                           actions: <Widget>[
                                                             TextButton(
                                                               style: TextButton

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:thanhson/src/features/screens/pages/change_information.dart';
 import 'package:thanhson/src/features/screens/pages/change_password.dart';
 import 'package:thanhson/src/features/widgets/box.dart';
 import 'package:thanhson/src/constants/colors.dart';
@@ -34,6 +35,14 @@ class _SettingState extends State<Setting> {
       _gardener = fetchedData;
       _loading = false;
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (ModalRoute.of(context)?.isFirst == true) {
+      initializeData();
+    }
   }
 
   @override
@@ -101,7 +110,16 @@ class _SettingState extends State<Setting> {
                             fontSize: 20,
                           ),
                         ),
-                        const SizedBox(height: 100),
+                        const SizedBox(height: 60),
+                        Box(
+                          titleString: 'Quản lý thông tin',
+                          onPressedCallback: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ChangeInformation(),
+                            )).then((_) => initializeData());
+                          },
+                        ),
+                        const SizedBox(height: 10),
                         Box(
                           titleString: 'Đổi mật khẩu',
                           onPressedCallback: () {

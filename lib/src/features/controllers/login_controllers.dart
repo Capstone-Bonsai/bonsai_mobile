@@ -125,7 +125,9 @@ Future<void> autoLoginFuture(BuildContext context) async {
       sharedPref.setString('token', jwtResponse.token);
       if (jwtResponse.role == "Gardener") {
         if (!context.mounted) return;
-        Navigator.of(context).pop();
+        if (Navigator.canPop(context)) {
+          Navigator.of(context).pop();
+        }
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
               builder: (_) => const MainPages(
@@ -143,12 +145,17 @@ Future<void> autoLoginFuture(BuildContext context) async {
       }
     } else {
       if (!context.mounted) return;
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     }
   } catch (error) {
     if (!context.mounted) return;
+    CustomAlertDialog.show(
+      context,
+      "Lỗi đăng nhập",
+      error.toString(),
+    );
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(builder: (_) => const LoginScreen()),
     );
