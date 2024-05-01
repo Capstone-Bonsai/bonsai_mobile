@@ -31,6 +31,10 @@ class _ChangePasswordState extends State<ChangePassword> {
           },
         ),
         backgroundColor: greyColor,
+        title: const Text(
+                  'Đặt lại mật khẩu',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                ),
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -41,12 +45,6 @@ class _ChangePasswordState extends State<ChangePassword> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Center(
-                child: Text(
-                  'Đặt lại mật khẩu',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                ),
-              ),
               const SizedBox(
                 height: 20,
               ),

@@ -38,16 +38,8 @@ class _SettingState extends State<Setting> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (ModalRoute.of(context)?.isFirst == true) {
-      initializeData();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    double imageSize = MediaQuery.of(context).size.width * 2 / 3;
+    double imageSize = MediaQuery.of(context).size.width * 1 / 2;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: greyColor,
@@ -110,7 +102,7 @@ class _SettingState extends State<Setting> {
                             fontSize: 20,
                           ),
                         ),
-                        const SizedBox(height: 60),
+                        const SizedBox(height: 150),
                         Box(
                           titleString: 'Quản lý thông tin',
                           onPressedCallback: () {

@@ -154,7 +154,7 @@ Future<void> updateProfile(BuildContext context, XFile? imageFile,
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Thành công"),
+            title: const Text("Cập nhật thành công"),
             content: Text(response.body),
             actions: [
               TextButton(

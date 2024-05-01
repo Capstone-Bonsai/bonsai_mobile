@@ -62,7 +62,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       const SizedBox(
                         height: 20,
                       ),
-                      _buildInputField(tEmail, emailController),
+                      _buildInputField('Email', emailController),
                       const Spacer(),
                       Container(
                         margin: const EdgeInsets.only(bottom: 50),

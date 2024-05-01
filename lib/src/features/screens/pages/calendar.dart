@@ -196,19 +196,19 @@ class _CalendarState extends State<Calendar> {
                   child: Column(
                     children: [
                       if (eventInfos.isNotEmpty &&
-                          eventInfos[0].contractStatus == 9)
+                          eventInfos[0].contractStatus == 10)
                         const Text("Xử lý khiếu nại",
                         style: TextStyle(
                           color: Colors.red
                         ),),
                          if (eventInfos.isNotEmpty &&
-                          (eventInfos[0].contractStatus == 6 || eventInfos[0].contractStatus == 11))
+                          (eventInfos[0].contractStatus == 7 || eventInfos[0].contractStatus == 11))
                         const Text("Đã hoàn thành công việc",
                         style: TextStyle(
                           color: Colors.green
                         ),),
                         if (eventInfos.isNotEmpty &&
-                          eventInfos[0].contractStatus == 7)
+                          eventInfos[0].contractStatus == 8)
                         const Text("Đã hoàn thành",
                         style: TextStyle(
                           color: Colors.green

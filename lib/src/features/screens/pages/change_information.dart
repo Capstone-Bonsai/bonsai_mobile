@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:thanhson/src/constants/colors.dart';
 import 'package:thanhson/src/constants/images.dart';
@@ -142,14 +143,14 @@ class _ChangeInformationState extends State<ChangeInformation> {
               ],
             ),
           ),
+          const SizedBox(height: 30),
+          _buildInputField(
+              Icons.face, "Tên", nameController),
           const SizedBox(height: 20),
           _buildInputField(
-              Icons.remove_red_eye_sharp, "Tên", userNameController),
-          const SizedBox(height: 10),
-          _buildInputField(
-              Icons.remove_red_eye_sharp, "Tên đăng nhập", nameController),
-          const SizedBox(height: 10),
-          _buildInputField(Icons.remove_red_eye_sharp, "Số điện thoại",
+              Icons.account_circle, "Tên đăng nhập", userNameController),
+          const SizedBox(height: 20),
+          _buildNumberInputField(Icons.phone_android_sharp, "Số điện thoại",
               phoneNumberController),
           const Spacer(),
           SizedBox(
@@ -179,6 +180,9 @@ class _ChangeInformationState extends State<ChangeInformation> {
       IconData icon, String text, TextEditingController controller) {
     return TextField(
       controller: controller,
+      inputFormatters: [
+      FilteringTextInputFormatter.allow(RegExp("[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\\s]")),
+    ],
       decoration: InputDecoration(
         prefixIcon: Icon(icon),
         labelText: text,
@@ -186,4 +190,19 @@ class _ChangeInformationState extends State<ChangeInformation> {
       ),
     );
   }
+  Widget _buildNumberInputField(
+  IconData icon, String text, TextEditingController controller) {
+  return TextField(
+    controller: controller,
+    keyboardType: TextInputType.number,
+    inputFormatters: [
+      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+    ],
+    decoration: InputDecoration(
+      prefixIcon: Icon(icon),
+      labelText: text,
+      border: const OutlineInputBorder(),
+    ),
+  );
+}
 }
